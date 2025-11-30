@@ -1,0 +1,4 @@
+nginx_repo_file: /etc/yum.repos.d/nginx.repo
+nginx_modules_dir: /etc/nginx/modules
+brotli_git_repo: https://github.com/google/ngx_brotli.git
+brotli_module_dir: /usr/local/src/ngx_brotli

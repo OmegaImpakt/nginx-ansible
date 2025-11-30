@@ -1,0 +1,3 @@
+ANSIBLE_USER: omegaimpakt
+ANSIBLE_SSH_PASS: semsem
+ANSIBLE_BECOME_PASS: semsem

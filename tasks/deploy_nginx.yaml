@@ -1,23 +1,9 @@
 ---
-  # 1. Add NGINX official repository
-  - name: Add nginx.org repo
-    copy:
-      dest: "{{ nginx_repo_file }}"
-      content: |
-        [nginx-stable]
-        name=nginx stable repo
-        baseurl=https://nginx.org/packages/rhel/$releasever/$basearch/
-        gpgcheck=1
-        enabled=1
-        gpgkey=https://nginx.org/keys/nginx_signing.key
-
   # 2. Install NGINX + available modules
   - name: Install nginx and dynamic modules from repo
     ansible.builtin.dnf:
       name:
       - nginx
-      - nginx-mod-http-headers-more
-      - nginx-mod-http-cache-purge
       state: present
 
   # 3. Install build dependencies for Brotli
@@ -34,10 +20,13 @@
       state: present
 
   # 4. Get current NGINX version
-  - name: Get installed nginx version
-    command: nginx -v
-    register: nginx_ver_raw
-    failed_when: false
+  - name: Get nginx package version
+    package_facts:
+      manager: auto
+
+  - name: Set nginx version fact
+    set_fact:
+      nginx_version: "{{ ansible_facts.packages['nginx'][0].version }}"
 
   - name: Extract numeric version from nginx output
     set_fact:
@@ -74,16 +63,11 @@
     args:
       chdir: "/usr/local/src/nginx-{{ nginx_version }}"
 
-  - name: Build Brotli dynamic modules
-    make:
-      chdir: "/usr/local/src/nginx-{{ nginx_version }}"
-      target: modules
-
   # 8. Copy Brotli modules to NGINX modules directory
-  - name: Create nginx modules directory
-    file:
-      path: "{{ nginx_modules_dir }}"
-      state: directory
+  - name: Build Brotli dynamic modules
+    command: make modules
+    args:
+      chdir: "/usr/local/src/nginx-{{ nginx_version }}"
 
   - name: Copy Brotli filter module
     copy:

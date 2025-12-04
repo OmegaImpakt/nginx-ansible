@@ -23,5 +23,5 @@ account: "MAIL"
 host: "smtp.gmail.com"
 port: 587
 user: hosam.shafik@gmail.com
-password: "xnmk cmuf plfj bimD"
+password: "{{ msmtp_password }}"
 account_default: MAIL

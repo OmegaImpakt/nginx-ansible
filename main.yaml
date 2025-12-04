@@ -1,0 +1,21 @@
+---
+- name: Deploy Nginx stack
+  hosts: web
+  become: true
+  tasks:
+    # - name: Include nginx deployment tasks
+    #   ansible.builtin.include_tasks: tasks/deploy_nginx.yaml
+
+    - name: Include MariaDB deployment tasks
+      ansible.builtin.include_tasks: tasks/deploy_mariadb.yaml
+
+    # - name: Include PHP deployment tasks
+    #   ansible.builtin.include_tasks: tasks/deploy_php.yaml
+
+    # - name: Include msmtp deployment tasks
+    #   ansible.builtin.include_tasks: tasks/deploy_msmtp.yaml
+
+  # handlers:
+  #   # Note: handlers typically don't need names for import_tasks,
+  #   # but you can add a name to the handler itself in handlers.yml
+  #   - ansible.builtin.import_tasks: handlers.yml

@@ -1,0 +1,31 @@
+# Security configuration for MariaDB
+[mysqld]
+# Networking
+bind-address = 127.0.0.1
+skip-networking = 0  # Set to 1 to disable TCP/IP completely
+
+# Authentication
+default_authentication_plugin = mysql_native_password
+
+# Security features
+local-infile = 0
+symbolic-links = 0
+skip-show-database
+
+# Logging
+log_error = /var/log/mysql/error.log
+slow_query_log = 1
+slow_query_log_file = /var/log/mysql/slow.log
+long_query_time = 2
+
+# Performance/Security
+max_connections = 100
+max_connect_errors = 10
+connect_timeout = 5
+wait_timeout = 600
+interactive_timeout = 600
+
+[client]
+user=root
+password="{{ mariadb_root_password }}"
+host=localhost

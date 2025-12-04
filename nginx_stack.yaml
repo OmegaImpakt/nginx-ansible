@@ -1,6 +1,0 @@
----
-- name: Deploy Nginx stack
-  hosts: web
-  become: true
-  tasks:
-    - include_tasks: tasks/deploy_nginx.yaml

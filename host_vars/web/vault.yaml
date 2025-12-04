@@ -1,3 +1,8 @@
-ANSIBLE_USER: omegaimpakt
+ANSIBLE_USER: mromega91
 ANSIBLE_SSH_PASS: semsem
 ANSIBLE_BECOME_PASS: semsem
+
+mariadb_root_user: root
+mariadb_root_password: semsem
+db_user: "mromega91"
+db_password: "semsem"

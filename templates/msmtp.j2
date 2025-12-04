@@ -1,0 +1,15 @@
+defaults
+# TLS DIRECTIVES
+tls on
+tls_starttls on
+tls_trust_file {{ tls_trust_file }}
+logfile {{ logfile }}
+account {{ account }}
+host {{ host }}
+port {{ port }}
+auth on
+user {{ user }}
+password {{ password }}
+from {{ user }}
+
+account default : {{ account_default }}

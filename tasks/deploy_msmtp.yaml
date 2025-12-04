@@ -1,0 +1,33 @@
+- name: Install MSMTP packages
+  ansible.builtin.apt:
+    name:
+    - msmtp
+    - msmtp-mta
+  run_once: true
+
+- name: Create MSMTP configuration file
+  template:
+    src: msmtp.j2
+    dest: /home/mromega91/.msmtprc
+    owner: mromega91
+    group: mromega91
+    mode: "0600"
+  run_once: true
+
+- name: Create MSMTP log file
+  ansible.builtin.file:
+    path: /home/mromega91/.msmtp.log
+    state: touch
+    owner: mromega91
+    group: msmtp
+    mode: "0660"
+  run_once: true
+
+- name: Create global MSMTP configuration file
+  template:
+    src: msmtp.j2
+    dest: /var/log/msmtp.log
+    owner: "www-data" # Optional: Set the owner of the copied file
+    group: "adm" # Optional: Set the group of the copied file
+    mode: '0640' # Optional: Set file permissions
+  run_once: true

@@ -1,0 +1,26 @@
+- name: Install php packages
+  ansible.builtin.apt:
+    name:
+    - php
+    - php8.3-fpm
+    - php8.3-gd
+    - php8.3-mbstring
+    - php8.3-mysql
+    - php8.3-xml
+    - php8.3-xmlrpc
+    - php8.3-opcache
+    - php8.3-cli
+    - php8.3-zip
+    - php8.3-soap
+    - php8.3-intl
+    - php8.3-bcmath
+    - php8.3-curl
+    - php8.3-imagick
+    - php8.3-ssh2
+    state: present
+  run_once: true
+
+- name: Enable PHP-FPM
+  ansible.builtin.service:
+    name: php8.3-fpm
+    state: started

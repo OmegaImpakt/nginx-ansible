@@ -1,0 +1,20 @@
+- name: Configure Nginx for PHP-FPM
+  ansible.builtin.template:
+    src: nginx_wordpress.conf.j2
+    dest: /etc/nginx/sites-available/{{ domain_name }}
+
+- name: Restart Nginx
+  ansible.builtin.service:
+    name: nginx
+    state: restarted
+
+- name: Enable Nginx site
+  ansible.builtin.file:
+    src: /etc/nginx/sites-available/{{ domain_name }}
+    dest: /etc/nginx/sites-enabled/{{ domain_name }}
+    state: link
+
+- name: Restart Nginx
+  ansible.builtin.service:
+    name: nginx
+    state: restarted

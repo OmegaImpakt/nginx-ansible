@@ -37,7 +37,7 @@ gzip_types: "text/plain text/css application/json application/javascript applica
 error_log: "/var/log/nginx/error.log"
 level: "error"
 web_port: 80
-server_name: "omega-cms.omega.local"
-index: index.php
+domain_name: "omega-cms.omega.local"
+index: index.php index.html index.htm
 ssl_certificate: "/etc/nginx/ssl/omega-soc.run.place.cer"
 ssl_certificate_key: "/etc/nginx/ssl/omega-soc.run.place.key"

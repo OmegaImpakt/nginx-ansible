@@ -1,0 +1,93 @@
+---
+# - name: Create Nginx server template
+#   template:
+#     src: nginx_wordpress.conf.j2
+#     dest: "/etc/nginx/nginx.conf"
+
+# - name: Restart Nginx after creating the server template
+#   ansible.builtin.service:
+#     name: nginx
+#     state: restarted
+
+# - name: Ensure project directory exists
+#   ansible.builtin.file:
+#     path: /var/www/html/omega-cms/public_html
+#     state: directory
+#     owner: www-data # or nginx, apache, etc.
+#     group: www-data
+#     mode: '0755'
+#     recurse: true
+
+# - name: Ensure extraction directory exists
+#   ansible.builtin.file:
+#     path: /tmp/wordpress-5.8
+#     state: directory
+#     mode: '0755'
+
+# - name: Download WordPress
+#   ansible.builtin.get_url:
+#     url: 'https://wordpress.org/wordpress-5.8.zip'
+#     dest: '/tmp/wordpress-5.8.zip'
+#     mode: '0644'
+#   run_once: true
+
+# - name: Copy files to project root directory
+#   ansible.builtin.copy:
+#     src: /tmp/wordpress-5.8/wordpress/
+#     dest: /var/www/html/omega-cms/public_html
+#     remote_src: true
+
+# - name: Set the secure and correct permissions on the WordPress directories
+#   ansible.builtin.file:
+#     path: /var/www/html/omega-cms/public_html
+#     state: directory
+#     owner: www-data
+#     group: www-data
+#     mode: '0755'
+#     recurse: true
+
+# - name: Set 0644 on all files (but NOT on directories) in the web root
+#   ansible.builtin.find:
+#     paths: /var/www/html/omega-cms/public_html
+#     file_type: file # ← this is the key
+#     use_regex: no
+#   register: found_files
+
+# - name: Change permissions of files only to 0644
+#   ansible.builtin.file:
+#     path: "{{ item.path }}"
+#     mode: '0644'
+#   loop: "{{ found_files.files }}"
+#   when: found_files.matched > 0
+
+# - name: Install WP-CLI
+#   ansible.builtin.get_url:
+#     url: https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+#     dest: /usr/local/bin/wp
+#     mode: '0755'
+#     owner: www-data
+#   become: true
+
+- name: Copy files to project root directory
+  ansible.builtin.copy:
+    src: /var/www/html/omega-cms/public_html/wp-config-sample.php
+    dest: /var/www/html/omega-cms/public_html/wp-config.php
+    remote_src: true
+
+- name: Create wp-config.php via WP-CLI
+  ansible.builtin.shell: |
+    sudo -u www-data -- wp config create \
+      --dbname={{ mariadb_database_name }} \
+      --dbuser={{ mariadb_user_name }} \
+      --dbpass={{ mariadb_user_password }} \
+      --dbhost={{ mariadb_user_host }} \
+      --locale=en_US \
+      --skip-check \
+      --extra-php <<'PHP'
+    define('WP_DEBUG', false);
+    define('DISALLOW_FILE_EDIT', true);
+    define('AUTOMATIC_UPDATER_DISABLED', true);
+    PHP
+  args:
+    chdir: /var/www/html/omega-cms/public_html
+    creates: /var/www/html/omega-cms/public_html/wp-config.php

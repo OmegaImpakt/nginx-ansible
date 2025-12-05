@@ -6,14 +6,17 @@
     # - name: Include nginx deployment tasks
     #   ansible.builtin.include_tasks: tasks/deploy_nginx.yaml
 
-    - name: Include MariaDB deployment tasks
-      ansible.builtin.include_tasks: tasks/deploy_mariadb.yaml
+    # - name: Include MariaDB deployment tasks
+    #   ansible.builtin.include_tasks: tasks/deploy_mariadb.yaml
 
     # - name: Include PHP deployment tasks
     #   ansible.builtin.include_tasks: tasks/deploy_php.yaml
 
     # - name: Include msmtp deployment tasks
     #   ansible.builtin.include_tasks: tasks/deploy_msmtp.yaml
+
+    - name: Deploy WordPress
+      ansible.builtin.include_tasks: tasks/deploy_wordpress.yaml
 
   # handlers:
   #   # Note: handlers typically don't need names for import_tasks,

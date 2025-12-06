@@ -1,44 +1,44 @@
 ---
-# - name: Install prerequisites
-#   apt:
-#     name:
-#       - software-properties-common
-#       - gnupg
-#       - curl
-#       - ca-certificates
-#       - python3-pymysql
-#     state: present
-#     update_cache: yes
-#   run_once: true
+- name: Install prerequisites
+  apt:
+    name:
+    - software-properties-common
+    - gnupg
+    - curl
+    - ca-certificates
+    - python3-pymysql
+    state: present
+    update_cache: yes
+  run_once: true
 
-# - name: Add MariaDB GPG key
-#   ansible.builtin.get_url:
-#     url: https://mariadb.org/mariadb_release_signing_key.asc
-#     dest: /etc/apt/trusted.gpg.d/mariadb.gpg
-#     mode: '0644'
-#   run_once: true
+- name: Add MariaDB GPG key
+  ansible.builtin.get_url:
+    url: https://mariadb.org/mariadb_release_signing_key.asc
+    dest: /etc/apt/trusted.gpg.d/mariadb.gpg
+    mode: '0644'
+  run_once: true
 
-# - name: Add MariaDB repository
-#   ansible.builtin.apt_repository:
-#     repo: "deb [arch=amd64,arm64] https://mirror.creoline.net/mariadb/repo/{{ mariadb_version }}/ubuntu {{ ubuntu_codename }} main"
-#     state: present
-#     filename: mariadb
-#     update_cache: yes
-#   run_once: true
+- name: Add MariaDB repository
+  ansible.builtin.apt_repository:
+    repo: "deb [arch=amd64,arm64] https://mirror.creoline.net/mariadb/repo/{{ mariadb_version }}/ubuntu {{ ubuntu_codename }} main"
+    state: present
+    filename: mariadb
+    update_cache: yes
+  run_once: true
 
-# - name: Install MariaDB packages
-#   apt:
-#     name:
-#       - mariadb-server
-#       - mariadb-client
-#     state: present
-#     update_cache: yes
+- name: Install MariaDB packages
+  apt:
+    name:
+    - mariadb-server
+    - mariadb-client
+    state: present
+    update_cache: yes
 
-# - name: Ensure MariaDB service is running
-#   service:
-#     name: mariadb
-#     state: started
-#     enabled: yes
+- name: Ensure MariaDB service is running
+  service:
+    name: mariadb
+    state: started
+    enabled: yes
 
 - name: Restart MariaDB
   ansible.builtin.service:

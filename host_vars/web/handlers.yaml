@@ -3,3 +3,8 @@ handlers:
   systemd:
     name: mariadb
     state: restarted
+
+- name: Restart Nginx
+  systemd:
+    name: nginx
+    state: restarted

@@ -39,11 +39,7 @@
     name: mariadb
     state: started
     enabled: yes
-
-- name: Restart MariaDB
-  ansible.builtin.service:
-    name: mariadb
-    state: started
+  notify: Restart MariaDB
 
 - name: Set MariaDB root password with mysqladmin
   ansible.builtin.shell: |

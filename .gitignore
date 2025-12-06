@@ -1,1 +1,10 @@
+# Secrets
+secrets.yml
+*.vault
+
+# Ansible
+*.retry
+inventory.ini  # The actual generated file
+
+# Vault password (if you use a password file)
 .vault_pass.txt

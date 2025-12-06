@@ -12,16 +12,17 @@
     # - name: Include PHP deployment tasks
     #   ansible.builtin.include_tasks: tasks/deploy_php.yaml
 
-    # - name: Nginx PHP-FPM configuration tasks
-    #   ansible.builtin.include_tasks: tasks/nginx_php.yaml
+    - name: Nginx PHP-FPM configuration tasks
+      ansible.builtin.include_tasks: tasks/nginx_php.yaml
 
     # # - name: Include msmtp deployment tasks
     # #   ansible.builtin.include_tasks: tasks/deploy_msmtp.yaml
 
-    - name: Deploy WordPress
-      ansible.builtin.include_tasks: tasks/deploy_wordpress.yaml
+    # - name: Deploy WordPress
+    #   ansible.builtin.include_tasks: tasks/deploy_wordpress.yaml
 
-  # handlers:
+  handlers:
+    - ansible.builtin.import_tasks: handlers.yml
   #   # Note: handlers typically don't need names for import_tasks,
   #   # but you can add a name to the handler itself in handlers.yml
-  #   - ansible.builtin.import_tasks: handlers.yml
+    

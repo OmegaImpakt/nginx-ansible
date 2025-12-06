@@ -1,6 +1,6 @@
 ---
 - name: Install prerequisites
-  apt:
+  ansible.builtin.apt:
     name:
     - software-properties-common
     - gnupg
@@ -27,7 +27,7 @@
   run_once: true
 
 - name: Install MariaDB packages
-  apt:
+  ansible.builtin.apt:
     name:
     - mariadb-server
     - mariadb-client
@@ -35,7 +35,7 @@
     update_cache: yes
 
 - name: Ensure MariaDB service is running
-  service:
+  ansible.builtin.service:
     name: mariadb
     state: started
     enabled: yes

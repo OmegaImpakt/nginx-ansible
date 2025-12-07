@@ -2,7 +2,8 @@
 - name: Deploy Nginx stack
   hosts: web
   roles:
-    - mariadb
+    # - mariadb
+    - php
   # tasks:
     # - name: Include nginx deployment tasks
     #   ansible.builtin.include_tasks: tasks/deploy_nginx.yaml

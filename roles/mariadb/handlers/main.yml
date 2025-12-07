@@ -1,5 +1,4 @@
 ---
-# handlers file for maria_db
 - name: Restart MariaDB
   ansible.builtin.service:
     name: mariadb

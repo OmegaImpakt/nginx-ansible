@@ -1,0 +1,67 @@
+---
+# tasks file for msmtp
+- name: Install MSMTP packages
+  ansible.builtin.apt:
+    name:
+      - msmtp
+      - msmtp-mta
+    state: present
+    update_cache: true
+  run_once: true
+
+- name: Create MSMTP user log directory
+  ansible.builtin.file:
+    path: /home/mromega91/.msmtp
+    state: directory
+    owner: mromega91
+    group: mromega91
+    mode: "0700"
+  run_once: true
+
+- name: Create MSMTP configuration file for user
+  ansible.builtin.template:
+    src: msmtp.j2
+    dest: /home/mromega91/.msmtprc
+    owner: mromega91
+    group: mromega91
+    mode: "0600"
+  run_once: true
+  no_log: true  # Don't log template content with passwords
+
+- name: Create user MSMTP log file
+  ansible.builtin.file:
+    path: "{{ msmtp_logfile }}"
+    state: touch
+    owner: mromega91
+    group: mromega91
+    mode: "0600"
+  run_once: true
+
+- name: Create global MSMTP log directory
+  ansible.builtin.file:
+    path: /var/log/msmtp
+    state: directory
+    owner: root
+    group: adm
+    mode: "0755"
+  run_once: true
+
+- name: Create global MSMTP log file
+  ansible.builtin.file:
+    path: "{{ msmtp_global_logfile }}"
+    state: touch
+    owner: root
+    group: adm
+    mode: "0640"
+  run_once: true
+
+- name: Create global MSMTP configuration (for system-wide use)
+  ansible.builtin.template:
+    src: msmtp.j2
+    dest: /etc/msmtprc
+    owner: root
+    group: root
+    mode: "0640"
+  run_once: true
+  no_log: true
+  when: msmtp_install_system_config | default(false)

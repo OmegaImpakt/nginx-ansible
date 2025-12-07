@@ -1,0 +1,17 @@
+---
+# defaults/main.yml
+# Default values for msmtp role
+
+# These can be overridden in host_vars or playbook
+msmtp_tls_trust_file: "/etc/ssl/certs/ca-certificates.crt"
+msmtp_logfile: "/home/mromega91/.msmtp.log"
+msmtp_global_logfile: "/var/log/msmtp.log"
+msmtp_account: "gmail"
+msmtp_host: "smtp.gmail.com"
+msmtp_port: 587
+msmtp_auth_method: "plain"
+msmtp_timeout: 30
+
+# Installation options
+msmtp_install_system_config: false  # Whether to install /etc/msmtprc
+msmtp_set_as_sendmail: false        # Whether to set as system sendmail

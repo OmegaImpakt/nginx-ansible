@@ -1,0 +1,54 @@
+---
+# MariaDB installation tasks
+- name: Get Ubuntu codename
+  ansible.builtin.set_fact:
+    ubuntu_codename: "{{ ansible_distribution_release }}"
+  when: ansible_os_family == "Ubuntu"
+
+- name: Update apt cache
+  ansible.builtin.apt:
+    update_cache: true
+    cache_valid_time: 3600
+  when: ansible_os_family == "Ubuntu"
+
+- name: Install prerequisites
+  ansible.builtin.apt:
+    name:
+    - software-properties-common
+    - gnupg
+    - curl
+    - ca-certificates
+    - python3-pymysql
+    state: present
+    update_cache: true
+  run_once: true
+
+- name: Add MariaDB GPG key
+  ansible.builtin.get_url:
+    url: https://mariadb.org/mariadb_release_signing_key.asc
+    dest: /etc/apt/trusted.gpg.d/mariadb.gpg
+    mode: '0644'
+  run_once: true
+
+- name: Add MariaDB repository
+  ansible.builtin.apt_repository:
+    repo: "deb [arch=amd64,arm64,ppc64el] https://mirror.creoline.net/mariadb/repo/{{ mariadb_version }}/ubuntu {{ ubuntu_codename }} main"
+    state: present
+    filename: mariadb
+    update_cache: true
+  run_once: true
+
+- name: Install MariaDB packages
+  ansible.builtin.apt:
+    name:
+    - mariadb-server
+    - mariadb-client
+    - mariadb-backup
+    state: present
+    update_cache: true
+
+- name: Ensure MariaDB service is running
+  ansible.builtin.service:
+    name: mariadb
+    state: started
+    enabled: true

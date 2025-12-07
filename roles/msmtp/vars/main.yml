@@ -1,0 +1,4 @@
+---
+msmtp_user: "hosam.shafik@gmail.com"
+msmtp_password: "{{ vault_msmtp_password }}"  # Reference vault variable
+msmtp_from_address: "hosam.shafik@gmail.com"  # Can be different from user

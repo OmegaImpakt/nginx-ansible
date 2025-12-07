@@ -1,0 +1,19 @@
+# MSMTP Configuration
+defaults
+# TLS DIRECTIVES
+tls on
+tls_starttls on
+tls_trust_file {{ msmtp_tls_trust_file }}
+logfile {{ msmtp_logfile }}
+
+# Account configuration
+account {{ msmtp_account }}
+host {{ msmtp_host }}
+port {{ msmtp_port }}
+auth {{ msmtp_auth_method }}
+user {{ msmtp_user }}
+password {{ msmtp_password }}
+from {{ msmtp_from_address }}
+
+# Set default account
+account default : {{ msmtp_account }}

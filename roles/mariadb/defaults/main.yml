@@ -1,2 +1,27 @@
 ---
-# defaults file for maria_db
+# MariaDB/mariadb configuration
+mariadb_root_password: "semsem"
+mariadb_root_user: "root"
+
+# Database to create
+mariadb_databases:
+  - name: "Omega-CMS"
+    encoding: "utf8mb4"
+    collation: "utf8mb4_unicode_ci"
+
+# Users to create
+mariadb_users:
+  - name: "MrOmega"
+    host: "localhost"
+    password: "semsem"
+    priv: "Omega-CMS.*:ALL"
+    state: "present"
+
+# Additional configuration
+mariadb_bind_address: "127.0.0.1"
+mariadb_port: 3306
+mariadb_service_name: "mariadb"
+mariadb_packages:
+  - mariadb-server
+  - mariadb-client
+  - python3-mariadb  # For Ansible mariadb modules

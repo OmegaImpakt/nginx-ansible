@@ -1,2 +1,6 @@
 ---
-# vars file for maria_db
+# Internal variables - not meant to be overridden
+mariadb_config_dir: "/etc/mysql"
+mariadb_include_dir: "/etc/mysql/mariadb.conf.d"
+mariadb_main_config: "/etc/mysql/my.cnf"
+mariadb_server_config: "/etc/mysql/mariadb.conf.d/50-server.cnf"

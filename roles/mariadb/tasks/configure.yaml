@@ -1,0 +1,79 @@
+- name: Set MariaDB root password with mariadbadmin
+  ansible.builtin.shell: |
+    mariadbadmin -u root password "{{ mariadb_root_password }}"
+
+- name: Ensure MariaDB service is started and enabled
+  ansible.builtin.service:
+    name: "{{ mariadb_service_name }}"
+    state: started
+    enabled: true
+
+- name: Remove anonymous MariaDB users
+  community.mysql.mysql_user:
+    login_user: "{{ mariadb_root_user }}"
+    login_password: "{{ mariadb_root_password }}"
+    name: ""
+    host: "{{ item }}"
+    state: absent
+  loop:
+  - localhost
+  - "{{ ansible_hostname }}"
+  no_log: true
+
+- name: Remove test database
+  community.mysql.mysql_db:
+    login_user: "{{ mariadb_root_user }}"
+    login_password: "{{ mariadb_root_password }}"
+    name: test
+    state: absent
+  no_log: true
+
+- name: Create Omega-CMS database
+  community.mysql.mysql_db:
+    login_user: "{{ mariadb_root_user }}"
+    login_password: "{{ mariadb_root_password }}"
+    name: "{{ item.name }}"
+    encoding: "{{ item.encoding | default('utf8mb4') }}"
+    collation: "{{ item.collation | default('utf8mb4_unicode_ci') }}"
+    state: present
+  loop: "{{ mariadb_databases }}"
+  loop_control:
+    label: "{{ item.name }}"
+  no_log: true
+
+- name: Create MrOmega user with privileges
+  community.mysql.mysql_user:
+    login_user: "{{ mariadb_root_user }}"
+    login_password: "{{ mariadb_root_password }}"
+    name: "{{ item.name }}"
+    host: "{{ item.host | default('localhost') }}"
+    password: "{{ item.password }}"
+    priv: "{{ item.priv }}"
+    state: "{{ item.state | default('present') }}"
+  loop: "{{ mariadb_users }}"
+  loop_control:
+    label: "{{ item.name }}"
+  no_log: true
+
+- name: Flush privileges
+  community.mysql.mysql_query:
+    login_user: "{{ mariadb_root_user }}"
+    login_password: "{{ mariadb_root_password }}"
+    query: "FLUSH PRIVILEGES;"
+  no_log: true
+
+- name: Ensure MariaDB configuration directory exists
+  ansible.builtin.file:
+    path: "{{ mariadb_include_dir }}"
+    state: directory
+    mode: '0755'
+
+- name: Configure MariaDB bind address
+  ansible.builtin.lineinfile:
+    path: "{{ mariadb_server_config }}"
+    regexp: '^bind-address\s*='
+    line: "bind-address = {{ mariadb_bind_address }}"
+    backup: true
+    create: true  Create the file if it doesn't exist
+  notify:
+  - Restart MariaDB

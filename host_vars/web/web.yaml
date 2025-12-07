@@ -5,26 +5,8 @@ ansible_ssh_pass: "{{ ANSIBLE_SSH_PASS }}"
 # Root password
 ansible_become_pass: "{{ ANSIBLE_BECOME_PASS }}"
 
-# MariaDB
-mariadb_version: "12.2"
-ubuntu_codename: "noble"
-db_root_user: "root"
-mariadb_root_password: "semsem"
-mariadb_user_name: "MrOmega"
-mariadb_user_password: "semsem"
-mariadb_database_name: "omega-cms"
-mariadb_user_host: "192.168.91.80"
-
 # MSMTP
-tls_trust_file: "/etc/ssl/certs/ca-certificates.crt"
-logfile: "~/.msmtp.log"
-etc_logfile: "/var/log/msmtp.log"
-account: "MAIL"
-host: "smtp.gmail.com"
-msmtp_port: 587
-user: hosam.shafik@gmail.com
-password: "{{ msmtp_password }}"
-account_default: MAIL
+
 
 # WordPress
 project_directory: '/var/www/html/omega-cms/public_html'

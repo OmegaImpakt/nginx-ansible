@@ -28,4 +28,3 @@
   #   - ansible.builtin.import_tasks: handlers.yml
   #   # Note: handlers typically don't need names for import_tasks,
   #   # but you can add a name to the handler itself in handlers.yml
-    
